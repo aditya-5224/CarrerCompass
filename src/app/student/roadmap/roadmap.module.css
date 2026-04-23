@@ -1,0 +1,730 @@
+.page {
+  position: relative;
+  min-height: 100vh;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 10% 10%, rgba(99, 102, 241, 0.2), transparent 28%),
+    radial-gradient(circle at 90% 18%, rgba(244, 114, 182, 0.16), transparent 25%),
+    linear-gradient(180deg, #070b16 0%, #090d18 100%);
+  color: #e5eefb;
+}
+
+.auroraOne,
+.auroraTwo {
+  position: fixed;
+  border-radius: 999px;
+  filter: blur(80px);
+  pointer-events: none;
+  opacity: 0.4;
+}
+
+.auroraOne {
+  top: 10%;
+  left: -6rem;
+  width: 18rem;
+  height: 18rem;
+  background: rgba(99, 102, 241, 0.22);
+}
+
+.auroraTwo {
+  right: -5rem;
+  bottom: 8%;
+  width: 20rem;
+  height: 20rem;
+  background: rgba(16, 185, 129, 0.16);
+}
+
+.navbar {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(8, 12, 24, 0.86);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+
+.navInner {
+  max-width: 1280px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  align-items: center;
+  gap: 20px;
+  padding: 16px 24px;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.brandMark {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 14px;
+  background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+  color: white;
+  box-shadow: 0 16px 30px rgba(99, 102, 241, 0.28);
+}
+
+.brandLabel,
+.progressBlock span,
+.sectionHeader p,
+.heroCopy p,
+.heroMetric span,
+.stepMeta,
+.insightList,
+.insightCard p,
+.insightCardAccent p {
+  color: rgba(226, 232, 240, 0.72);
+}
+
+.brandLabel {
+  display: block;
+  font-size: 12px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+
+.brand strong {
+  display: block;
+  font-size: 1.05rem;
+  line-height: 1.2;
+}
+
+.progressBlock {
+  min-width: 260px;
+}
+
+.progressTrack {
+  width: 100%;
+  height: 10px;
+  border-radius: 999px;
+  overflow: hidden;
+  background: rgba(148, 163, 184, 0.16);
+  margin-bottom: 6px;
+}
+
+.progressFill {
+  height: 100%;
+  border-radius: inherit;
+  transition: width 0.45s ease;
+}
+
+.navActions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.primaryButton,
+.secondaryButton,
+.toggleButton,
+.suggestionChip {
+  border: 1px solid transparent;
+  transition: all 0.2s ease;
+  font: inherit;
+}
+
+.secondaryButton,
+.toggleButton,
+.suggestionChip {
+  background: rgba(255, 255, 255, 0.04);
+  color: #e2e8f0;
+}
+
+.secondaryButton:hover,
+.toggleButton:hover,
+.suggestionChip:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+.secondaryButton {
+  padding: 10px 14px;
+  border-radius: 14px;
+}
+
+.main {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 42px 24px 60px;
+  display: grid;
+  gap: 26px;
+}
+
+.heroSection {
+  display: grid;
+  grid-template-columns: 1.2fr 0.8fr;
+  gap: 22px;
+  align-items: stretch;
+}
+
+.heroCopy,
+.heroPanel,
+.statCard,
+.roadmapSection,
+.insightCard,
+.insightCardAccent {
+  background: rgba(11, 17, 32, 0.76);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.28);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+}
+
+.heroCopy {
+  border-radius: 30px;
+  padding: 30px;
+  display: grid;
+  gap: 18px;
+}
+
+.pill,
+.pillMuted {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  width: fit-content;
+  padding: 7px 12px;
+  border-radius: 999px;
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.pill {
+  color: #dbeafe;
+  background: rgba(99, 102, 241, 0.15);
+  border: 1px solid rgba(99, 102, 241, 0.25);
+}
+
+.pillMuted {
+  color: #bfdbfe;
+  background: rgba(148, 163, 184, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.heroCopy h1 {
+  font-size: clamp(2.5rem, 5vw, 4.8rem);
+  line-height: 0.98;
+  letter-spacing: -0.05em;
+  max-width: 12ch;
+}
+
+.heroCopy p {
+  font-size: 1.05rem;
+  line-height: 1.8;
+  max-width: 60ch;
+}
+
+.inputRow {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.input {
+  flex: 1;
+  min-width: 260px;
+  min-height: 54px;
+  padding: 0 18px;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #f8fbff;
+  font-size: 1rem;
+  outline: none;
+}
+
+.input::placeholder {
+  color: #94a3b8;
+}
+
+.input:focus {
+  border-color: rgba(99, 102, 241, 0.7);
+  box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.15);
+}
+
+.primaryButton {
+  min-height: 54px;
+  padding: 0 18px;
+  border-radius: 16px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  color: #070c16;
+  font-weight: 800;
+  background: linear-gradient(135deg, #8be6ff 0%, #7c8cff 48%, #c084fc 100%);
+  box-shadow: 0 20px 40px rgba(99, 102, 241, 0.28);
+}
+
+.primaryButton:hover {
+  transform: translateY(-1px);
+}
+
+.primaryButton:disabled {
+  cursor: wait;
+  opacity: 0.72;
+  transform: none;
+}
+
+.notice {
+  color: #a7f3d0;
+  font-size: 0.95rem;
+}
+
+.suggestionRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.suggestionChip {
+  padding: 9px 12px;
+  border-radius: 999px;
+  border-color: rgba(255, 255, 255, 0.08);
+  color: #dbeafe;
+}
+
+.heroPanel {
+  border-radius: 30px;
+  padding: 24px;
+  display: grid;
+  gap: 14px;
+}
+
+.heroEmptyState {
+  display: grid;
+  gap: 14px;
+}
+
+.emptyPreviewCard,
+.emptyRoadmapCard,
+.loadingCard {
+  border-radius: 20px;
+  padding: 18px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.emptyPreviewCard {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+}
+
+.emptyPreviewCard strong,
+.emptyRoadmapCard strong,
+.loadingCard strong {
+  display: block;
+  color: #f8fbff;
+  margin-bottom: 4px;
+}
+
+.emptyPreviewCard p,
+.emptyRoadmapCard p,
+.loadingCard p {
+  color: rgba(226, 232, 240, 0.72);
+  line-height: 1.65;
+}
+
+.heroMetric,
+.heroMetricAccent {
+  border-radius: 20px;
+  padding: 18px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.heroMetric strong,
+.heroMetricAccent strong,
+.statCard strong,
+.sectionMeta span,
+.stepCard h3,
+.insightCardAccent strong {
+  display: block;
+  color: #f8fbff;
+}
+
+.heroMetric strong {
+  margin-top: 8px;
+  font-size: 1.1rem;
+}
+
+.heroMetricAccent {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.heroMetricAccent strong {
+  margin-top: 3px;
+  font-size: 1.2rem;
+}
+
+.detailPanel {
+  border-radius: 22px;
+  padding: 18px;
+  background: rgba(255, 255, 255, 0.035);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.detailLabel {
+  display: inline-flex;
+  margin-bottom: 10px;
+  color: #cbd5e1;
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.detailPanel p,
+.detailPanel li {
+  color: rgba(226, 232, 240, 0.78);
+  line-height: 1.7;
+}
+
+.detailPanel ul {
+  display: grid;
+  gap: 10px;
+  margin-top: 14px;
+  padding-left: 18px;
+}
+
+.statsGrid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.statCard {
+  border-radius: 22px;
+  padding: 18px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.statCard span {
+  display: block;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: #94a3b8;
+}
+
+.roadmapSection {
+  border-radius: 32px;
+  padding: 30px;
+}
+
+.emptyRoadmap,
+.loadingShell {
+  display: grid;
+  gap: 14px;
+}
+
+.emptyRoadmap {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.emptyRoadmapCard {
+  display: grid;
+  gap: 8px;
+  min-height: 150px;
+  align-content: start;
+}
+
+.loadingShell {
+  padding: 0 30px 30px;
+}
+
+.loadingCard {
+  display: grid;
+  justify-items: center;
+  text-align: center;
+  gap: 10px;
+}
+
+.loadingSpinner {
+  width: 42px;
+  height: 42px;
+  border-radius: 999px;
+  border: 3px solid rgba(148, 163, 184, 0.2);
+  border-top-color: #8be6ff;
+  animation: spin 0.9s linear infinite;
+}
+
+.sectionHeader {
+  display: flex;
+  justify-content: space-between;
+  gap: 18px;
+  align-items: flex-start;
+  margin-bottom: 24px;
+}
+
+.sectionHeader h2 {
+  font-size: clamp(1.9rem, 3vw, 3rem);
+  line-height: 1.05;
+  letter-spacing: -0.04em;
+  margin: 14px 0 10px;
+}
+
+.sectionMeta {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 16px;
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.timeline {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.stepCard {
+  position: relative;
+  border-radius: 24px;
+  padding: 22px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  transition: transform 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+}
+
+.stepCardReveal {
+  opacity: 0;
+  transform: translateY(14px);
+  animation: riseIn 0.55s ease forwards;
+}
+
+.stepCard:hover {
+  transform: translateY(-2px);
+  border-color: rgba(99, 102, 241, 0.35);
+}
+
+.stepCardComplete {
+  background: linear-gradient(145deg, rgba(17, 24, 39, 0.92), rgba(8, 15, 30, 0.95));
+  border-color: rgba(74, 222, 128, 0.2);
+}
+
+.stepTopRow {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.stepIndex {
+  display: grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 14px;
+  color: white;
+  font-weight: 800;
+}
+
+.toggleButton {
+  padding: 10px 14px;
+  border-radius: 14px;
+  font-weight: 700;
+}
+
+.stepCard h3 {
+  font-size: 1.2rem;
+  margin-bottom: 8px;
+}
+
+.stepCard p {
+  color: #cbd5e1;
+  line-height: 1.65;
+}
+
+.stepDetailBar {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: center;
+  margin: 14px 0 2px;
+  padding: 12px 14px;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.035);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.stepDetailBar span {
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: #94a3b8;
+}
+
+.stepDetailBar strong {
+  color: #f8fbff;
+  font-weight: 700;
+  text-align: right;
+}
+
+.stepMeta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin: 16px 0 14px;
+  font-size: 0.9rem;
+}
+
+.stepMeta span {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.resourceRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.resourceChip {
+  display: inline-flex;
+  align-items: center;
+  padding: 8px 10px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: #dbeafe;
+  font-size: 0.88rem;
+}
+
+.bottomGrid {
+  display: grid;
+  grid-template-columns: 1.3fr 0.7fr;
+  gap: 16px;
+}
+
+.insightCard,
+.insightCardAccent {
+  border-radius: 28px;
+  padding: 24px;
+}
+
+.sectionMiniHeader {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: #cbd5e1;
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin-bottom: 14px;
+}
+
+.insightList {
+  display: grid;
+  gap: 12px;
+  padding-left: 18px;
+  line-height: 1.7;
+}
+
+.insightCardAccent {
+  display: grid;
+  align-content: start;
+  gap: 10px;
+}
+
+.insightCardAccent strong {
+  font-size: 1.25rem;
+}
+
+.primaryButton,
+.secondaryButton,
+.toggleButton,
+.suggestionChip {
+  cursor: pointer;
+}
+
+@media (max-width: 1120px) {
+  .navInner {
+    grid-template-columns: 1fr;
+  }
+
+  .progressBlock {
+    min-width: 0;
+  }
+
+  .heroSection,
+  .bottomGrid,
+  .timeline,
+  .statsGrid,
+  .emptyRoadmap {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 720px) {
+  .main {
+    padding: 24px 16px 52px;
+  }
+
+  .heroCopy,
+  .heroPanel,
+  .roadmapSection,
+  .insightCard,
+  .insightCardAccent {
+    border-radius: 24px;
+    padding: 20px;
+  }
+
+  .heroCopy h1 {
+    font-size: 2.5rem;
+  }
+
+  .sectionHeader {
+    flex-direction: column;
+  }
+
+  .inputRow {
+    flex-direction: column;
+  }
+
+  .primaryButton {
+    width: 100%;
+  }
+
+  .navActions {
+    width: 100%;
+  }
+
+  .secondaryButton {
+    flex: 1;
+  }
+
+  .loadingShell {
+    padding: 0 20px 20px;
+  }
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes riseIn {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

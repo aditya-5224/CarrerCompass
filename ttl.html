@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Career Compass - Roadmap Generator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: { extend: { colors: { slate: { 900: '#0f172a' }, indigo: { 500: '#6366f1' } } } }
+        }
+    </script>
+</head>
+<body class="bg-gradient-to-br from-slate-900 via-slate-900 to-slate-950 text-white min-h-screen">
+    
+    <!-- Navbar (Same as before) -->
+    <nav class="bg-slate-900/95 backdrop-blur-md border-b border-slate-800 sticky top-0 z-50 shadow-2xl">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <!-- Left: Brand + Career -->
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 bg-indigo-500 rounded-xl flex items-center justify-center shadow-lg">
+                        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <h1 class="text-xl font-bold bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text text-transparent">
+                            Career Compass
+                        </h1>
+                        <p id="careerTitle" class="text-sm text-slate-400 font-medium">Software Engineer</p>
+                    </div>
+                </div>
+
+                <!-- Center: Progress Bar -->
+                <div class="flex flex-col items-center mx-8 hidden lg:flex">
+                    <div class="w-48 bg-slate-800 rounded-full h-2 overflow-hidden shadow-inner">
+                        <div id="progressBar" class="bg-gradient-to-r from-indigo-500 to-purple-500 h-2 rounded-full transition-all duration-1000" style="width: 0%"></div>
+                    </div>
+                    <p id="progressText" class="text-xs text-slate-400 mt-1 font-medium tracking-wide">Path Completion: 0%</p>
+                </div>
+
+                <!-- Right Side -->
+                <div class="flex items-center space-x-3">
+                    <div id="careerMatchBadge" class="bg-gradient-to-r from-indigo-500/20 to-purple-500/20 backdrop-blur-sm border border-indigo-500/30 rounded-full px-4 py-2 shadow-lg hidden">
+                        <span class="text-indigo-300 font-semibold text-sm flex items-center space-x-1">
+                            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                            </svg>
+                            <span id="matchPercent">92%</span> Skill Match
+                        </span>
+                    </div>
+                    <button onclick="retakeAssessment()" class="px-4 py-2 bg-slate-800/50 hover:bg-slate-700/50 border border-slate-700/50 rounded-xl text-sm font-medium transition-all duration-200 backdrop-blur-sm hover:shadow-lg hover:border-slate-600/50">
+                        Retake Assessment
+                    </button>
+                    <!-- Profile Dropdown (same as before) -->
+                    <div class="relative">
+                        <button class="w-10 h-10 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-200 flex items-center justify-center relative group">
+                            <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Mobile Progress -->
+        <div class="lg:hidden px-4 pb-4">
+            <div class="flex flex-col items-center">
+                <div class="w-full max-w-sm bg-slate-800 rounded-full h-2 overflow-hidden shadow-inner">
+                    <div id="mobileProgressBar" class="bg-gradient-to-r from-indigo-500 to-purple-500 h-2 rounded-full transition-all duration-1000" style="width: 0%"></div>
+                </div>
+                <p id="mobileProgressText" class="text-xs text-slate-400 mt-2 font-medium tracking-wide">Path Completion: 0%</p>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        
+        <!-- Career Input Section -->
+        <div id="inputSection" class="text-center max-w-2xl mx-auto mb-16">
+            <h1 class="text-5xl lg:text-6xl font-black bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400 bg-clip-text text-transparent mb-6">
+                Your Career Roadmap
+            </h1>
+            <p class="text-xl text-slate-400 mb-8">Enter your dream career and get a personalized learning path</p>
+            
+            <div class="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
+                <input id="careerInput" type="text" placeholder="e.g. Software Engineer, Data Scientist..." 
+                       class="flex-1 px-6 py-4 bg-slate-800/50 border-2 border-slate-700/50 rounded-2xl text-lg 
+                              focus:border-indigo-500 focus:outline-none transition-all backdrop-blur-sm 
+                              placeholder-slate-500 hover:border-slate-600/50">
+                <button onclick="generateRoadmap()" 
+                        class="px-8 py-4 bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 
+                               rounded-2xl font-bold text-lg shadow-xl hover:shadow-2xl transform hover:-translate-y-1 
+                               transition-all duration-300 whitespace-nowrap">
+                    Generate Roadmap
+                </button>
+            </div>
+        </div>
+
+        <!-- Roadmap Output Section -->
+        <div id="roadmapSection" class="hidden">
+            <!-- Roadmap Header -->
+            <div class="text-center mb-16">
+                <div class="inline-flex items-center px-6 py-3 bg-gradient-to-r from-emerald-500/20 to-teal-500/20 
+                            border border-emerald-500/30 rounded-2xl backdrop-blur-sm mb-6">
+                    <svg class="w-6 h-6 text-emerald-400 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                    </svg>
+                    <span class="text-lg font-semibold text-emerald-300">AI-Optimized Path • Est. 6-12 months</span>
+                </div>
+                <h2 id="roadmapTitle" class="text-4xl lg:text-5xl font-black bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text text-transparent mb-4">
+                    Software Engineer Roadmap
+                </h2>
+            </div>
+
+            <!-- Roadmap Steps -->
+            <div id="roadmapSteps" class="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-16">
+                <!-- Dynamic roadmap cards will appear here -->
+            </div>
+
+            <!-- Progress & Actions -->
+            <div class="text-center">
+                <button onclick="markComplete()" 
+                        class="px-12 py-6 bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 
+                               rounded-3xl font-bold text-xl shadow-2xl hover:shadow-3xl transform hover:-translate-y-2 
+                               transition-all duration-300 mb-6">
+                    Mark Step Complete
+                </button>
+                <p class="text-slate-500 text-lg">Track your progress and celebrate milestones! 🎉</p>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Career Roadmap Database
+        const careerRoadmaps = {
+            'Software Engineer': [
+                { title: 'HTML/CSS/JavaScript Fundamentals', duration: '2 weeks', resources: ['freeCodeCamp', 'MDN Web Docs'], complete: false },
+                { title: 'React & Modern Frontend', duration: '4 weeks', resources: ['React Docs', 'Scrimba'], complete: false },
+                { title: 'Node.js & Express Backend', duration: '3 weeks', resources: ['Node.js Docs', 'Net Ninja'], complete: false },
+                { title: 'Database Design (SQL/NoSQL)', duration: '2 weeks', resources: ['PostgreSQL', 'MongoDB'], complete: false },
+                { title: 'Build Portfolio Projects', duration: '4 weeks', resources: ['GitHub', 'Vercel'], complete: false },
+                { title: 'System Design & Interviews', duration: '3 weeks', resources: ['LeetCode', 'System Design Primer'], complete: false }
+            ],
+            'Data Scientist': [
+                { title: 'Python & Data Libraries', duration: '3 weeks', resources: ['Pandas', 'NumPy'], complete: false },
+                { title: 'Statistics & Probability', duration: '2 weeks', resources: ['Khan Academy', 'StatQuest'], complete: false },
+                { title: 'Machine Learning Basics', duration: '4 weeks', resources: ['Coursera ML', 'fast.ai'], complete: false },
+                { title: 'SQL & Data Engineering', duration: '2 weeks', resources: ['Mode Analytics', 'DataCamp'], complete: false },
+                { title: 'Visualization (Tableau/PowerBI)', duration: '2 weeks', resources: ['Tableau Public'], complete: false },
+                { title: 'Capstone Projects', duration: '4 weeks', resources: ['Kaggle'], complete: false }
+            ],
+            'UX/UI Designer': [
+                { title: 'Design Fundamentals', duration: '2 weeks', resources: ['Figma Basics', 'Google Design'], complete: false },
+                { title: 'Figma & Prototyping', duration: '3 weeks', resources: ['Figma Academy'], complete: false },
+                { title: 'User Research Methods', duration: '2 weeks', resources: ['Nielsen Norman'], complete: false },
+                { title: 'Design Systems', duration: '2 weeks', resources: ['Material Design'], complete: false },
+                { title: 'Portfolio & Case Studies', duration: '3 weeks', resources: ['Dribbble', 'Behance'], complete: false },
+                { title: 'Advanced Animation', duration: '2 weeks', resources: ['LottieFiles'], complete: false }
+            ]
+        };
+
+        let currentRoadmap = [];
+        let progress = 0;
+
+        function generateRoadmap() {
+            const careerInput = document.getElementById('careerInput').value.trim();
+            if (!careerInput) {
+                alert('Please enter a career!');
+                return;
+            }
+
+            const career = careerInput.charAt(0).toUpperCase() + careerInput.slice(1);
+            document.getElementById('careerTitle').textContent = career;
+            document.getElementById('roadmapTitle').textContent = `${career} Roadmap`;
+
+            // Find matching roadmap or use generic
+            currentRoadmap = careerRoadmaps[career] || generateGenericRoadmap(career);
+            
+            document.getElementById('inputSection').classList.add('hidden');
+            document.getElementById('roadmapSection').classList.remove('hidden');
+            
+            renderRoadmap();
+            updateProgress();
+            document.getElementById('careerMatchBadge').classList.remove('hidden');
+        }
+
+        function generateGenericRoadmap(career) {
+            return [
+                { title: `Fundamentals of ${career}`, duration: '2-3 weeks', resources: ['Official Docs', 'YouTube'], complete: false },
+                { title: `Core Tools & Technologies`, duration: '3-4 weeks', resources: ['Roadmap.sh', 'GitHub'], complete: false },
+                { title: `Hands-on Projects`, duration: '4 weeks', resources: ['Portfolio', 'GitHub'], complete: false },
+                { title: `Advanced Concepts`, duration: '3 weeks', resources: ['Books', 'Courses'], complete: false },
+                { title: `Build Portfolio`, duration: '2 weeks', resources: ['Personal Site'], complete: false },
+                { title: `Job Prep & Networking`, duration: '2 weeks', resources: ['LinkedIn', 'Interviews'], complete: false }
+            ];
+        }
+
+        function renderRoadmap() {
+            const container = document.getElementById('roadmapSteps');
+            container.innerHTML = '';
+
+            currentRoadmap.forEach((step, index) => {
+                const stepEl = document.createElement('div');
+                stepEl.className = `group p-8 bg-slate-800/50 border border-slate-700/50 rounded-3xl 
+                                   hover:bg-slate-700/50 hover:border-indigo-500/50 transition-all duration-300 
+                                   backdrop-blur-sm shadow-xl hover:shadow-2xl hover:-translate-y-2 cursor-pointer 
+                                   ${step.complete ? 'ring-2 ring-emerald-500/30 bg-emerald-500/10 border-emerald-500/30' : ''}`;
+                
+                stepEl.innerHTML = `
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="flex items-center space-x-3">
+                            <div class="w-12 h-12 bg-gradient-to-br ${step.complete ? 'from-emerald-500 to-teal-600' : 'from-indigo-500 to-purple-600'} 
+                                         rounded-2xl flex items-center justify-center text-xl font-bold shadow-xl">
+                                ${index + 1}
+                            </div>
+                            <div>
+                                <h3 class="text-xl font-bold text-white">${step.title}</h3>
+                                <p class="text-slate-400">${step.duration}</p>
+                            </div>
+                        </div>
+                        <button onclick="toggleComplete(${index})" class="p-2 rounded-xl ${step.complete ? 'bg-emerald-500/20 text-emerald-400' : 'bg-slate-700/50 text-slate-400'} hover:bg-indigo-500/20 hover:text-indigo-400 transition-all">
+                            ${step.complete ? '✓' : '○'}
+                        </button>
+                    </div>
+                    <div class="space-y-2">
+                        ${step.resources.map(resource => 
+                            `<span class="inline-block bg-slate-700/50 px-3 py-1 rounded-full text-sm text-slate-300 hover:bg-indigo-500/20 hover:text-indigo-300 transition-all">${resource}</span>`
+                        ).join('')}
+                    </div>
+                `;
+                container.appendChild(stepEl);
+            });
+        }
+
+        function toggleComplete(index) {
+            currentRoadmap[index].complete = !currentRoadmap[index].complete;
+            renderRoadmap();
+            updateProgress();
+        }
+
+        function updateProgress() {
+            const completed = currentRoadmap.filter(step => step.complete).length;
+            progress = (completed / currentRoadmap.length) * 100;
+            
+            document.getElementById('progressBar').style.width = `${progress}%`;
+            document.getElementById('mobileProgressBar').style.width = `${progress}%`;
+            document.getElementById('progressText').textContent = `Path Completion: ${Math.round(progress)}%`;
+            document.getElementById('mobileProgressText').textContent = `Path Completion: ${Math.round(progress)}%`;
+            
+            document.getElementById('matchPercent').textContent = `${Math.round(85 + (progress/100)*10)}%`;
+        }
+
+        function retakeAssessment() {
+            document.getElementById('inputSection').classList.remove('hidden');
+            document.getElementById('roadmapSection').classList.add('hidden');
+            document.getElementById('careerInput').value = '';
+            document.getElementById('careerMatchBadge').classList.add('hidden');
+            progress = 0;
+            updateProgress();
+        }
+
+                function markComplete() {
+                    const incompleteSteps = currentRoadmap.filter(step => !step.complete);
+        
+                    if (incompleteSteps.length === 0) {
+                        alert('Amazing! You have completed your entire roadmap! 🎉');
+                        return;
+                    }
+        
+                    const nextStepIndex = currentRoadmap.findIndex(step => !step.complete);
+                    if (nextStepIndex !== -1) {
+                        toggleComplete(nextStepIndex);
+                    }
+                }
+            </script>
+        </body>
+        </html>
