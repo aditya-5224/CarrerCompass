@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { GoogleGenerativeAI } from "@google/generative-ai";
 
 type GeminiCandidate = {
   content?: {
@@ -175,6 +176,48 @@ type ResumeFields = {
   CERTIFICATIONS?: string;
 };
 
+function extractBalancedJsonObject(text: string) {
+  const startIndex = text.indexOf("{");
+  if (startIndex === -1) {
+    return undefined;
+  }
+
+  let depth = 0;
+  let inString = false;
+  let escaped = false;
+
+  for (let index = startIndex; index < text.length; index += 1) {
+    const char = text[index];
+
+    if (inString) {
+      if (escaped) {
+        escaped = false;
+      } else if (char === "\\") {
+        escaped = true;
+      } else if (char === '"') {
+        inString = false;
+      }
+      continue;
+    }
+
+    if (char === '"') {
+      inString = true;
+      continue;
+    }
+
+    if (char === "{") {
+      depth += 1;
+    } else if (char === "}") {
+      depth -= 1;
+      if (depth === 0) {
+        return text.slice(startIndex, index + 1);
+      }
+    }
+  }
+
+  return undefined;
+}
+
 export async function POST(req: Request) {
   try {
     const body = (await req.json()) as {
@@ -239,61 +282,139 @@ export async function POST(req: Request) {
       jobDescription,
     ].join("\n");
 
-    const response = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${geminiApiKey}`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          contents: [
-            {
-              parts: [{ text: prompt }],
-            },
-          ],
-        }),
-      }
-    );
+    // Build SDK client and attempt generation with retry/backoff and fallback models.
+    const client = new GoogleGenerativeAI(geminiApiKey);
 
-    if (!response.ok) {
-      const errorText = await response.text();
-      return NextResponse.json(
-        { error: `Gemini API request failed: ${errorText}` },
-        { status: 502 }
-      );
+    const fallbackModels = [
+      "gemini-3-flash-preview",
+      "gemini-2.0-flash",
+      "text-bison-001",
+    ];
+
+    async function sleep(ms: number) {
+      return new Promise((res) => setTimeout(res, ms));
     }
 
-    const data = (await response.json()) as GeminiResponse;
-    const outputText = data.candidates?.[0]?.content?.parts
-      ?.map((part) => part.text || "")
-      .join("\n")
-      .trim();
+    async function tryGenerate(promptText: string) {
+      const maxAttemptsPerModel = 2;
+      const baseBackoffMs = 800;
+
+      for (const model of fallbackModels) {
+        try {
+          const modelClient = client.getGenerativeModel({ model });
+
+          for (let attempt = 1; attempt <= maxAttemptsPerModel; attempt++) {
+            try {
+              const sdkRes = await modelClient.generateContent({
+                contents: [{ role: "user", parts: [{ text: promptText }] }],
+              });
+              return { sdkRes, model };
+            } catch (err) {
+              console.error(`Generate error (model=${model} attempt=${attempt}):`, err instanceof Error ? err.message : err);
+              if (attempt < maxAttemptsPerModel) {
+                const backoff = baseBackoffMs * Math.pow(2, attempt - 1);
+                await sleep(backoff + Math.floor(Math.random() * 200));
+              }
+            }
+          }
+        } catch (outerErr) {
+          console.error(`Model selection/SDK error for model=${model}:`, outerErr instanceof Error ? outerErr.stack : outerErr);
+        }
+      }
+
+      for (const model of fallbackModels) {
+        try {
+          const restResponse = await fetch(
+            `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${geminiApiKey}`,
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                contents: [{ role: "user", parts: [{ text: promptText }] }],
+              }),
+            }
+          );
+
+          const restText = await restResponse.text();
+          if (!restResponse.ok) {
+            console.error(`REST fallback failed for model=${model}:`, restResponse.status, restText.slice(0, 2000));
+            continue;
+          }
+
+          return { sdkRes: { responseText: restText, model }, model };
+        } catch (restErr) {
+          console.error(`REST fallback error for model=${model}:`, restErr instanceof Error ? restErr.stack : restErr);
+        }
+      }
+
+      return { error: "All models failed or are unavailable." };
+    }
+
+    const genResult = await tryGenerate(prompt);
+
+    if ((genResult as any).error) {
+      return NextResponse.json({ error: (genResult as any).error }, { status: 502 });
+    }
+
+    const sdkResponse = (genResult as any).sdkRes as unknown;
+
+    // Extract text defensively from SDK response.
+    const sdkAny = sdkResponse as any;
+    const responseText =
+      (typeof sdkAny?.responseText === "string" ? sdkAny.responseText : undefined) ||
+      (typeof sdkAny?.response?.text === "function" ? sdkAny.response.text() : undefined) ||
+      (typeof sdkAny?.text === "function" ? sdkAny.text() : undefined);
+    const outputText =
+      (typeof responseText === "string" ? responseText.trim() : undefined) ||
+      sdkAny?.candidates?.[0]?.content?.parts?.map((p: any) => p.text || "").join("\n").trim() ||
+      sdkAny?.candidates?.[0]?.text ||
+      sdkAny?.output?.[0]?.content?.parts?.map((p: any) => p.text || "").join("\n").trim() ||
+      (typeof sdkAny === "string" ? sdkAny : undefined);
 
     if (!outputText) {
+      if (sdkAny?.response?.promptFeedback) {
+        console.error("Gemini promptFeedback:", JSON.stringify(sdkAny.response.promptFeedback, null, 2));
+      }
+      console.error("SDK response shape:", JSON.stringify(sdkAny, null, 2).slice(0, 4000));
       return NextResponse.json(
         { error: "Gemini returned an empty response." },
         { status: 500 }
       );
     }
 
-    const cleanedOutput = outputText
-      .replace(/^```[a-zA-Z]*\s*/g, "")
-      .replace(/```$/g, "")
-      .trim();
+    console.error("Resume output preview:", String(outputText).slice(0, 2000));
+
+    const cleanedOutput = outputText?.replace(/^```[a-zA-Z]*\s*/g, "").replace(/```$/g, "").trim();
+    console.error("Resume cleaned preview:", cleanedOutput.slice(0, 2000));
 
     let fields: ResumeFields;
     try {
-      fields = JSON.parse(cleanedOutput) as ResumeFields;
-    } catch {
-      const jsonMatch = cleanedOutput.match(/\{[\s\S]*\}/);
-      if (!jsonMatch) {
-        return NextResponse.json(
-          { error: "Gemini did not return valid JSON." },
-          { status: 500 }
-        );
+      fields = JSON.parse(cleanedOutput || "") as ResumeFields;
+    } catch (firstErr) {
+      const jsonCandidate = extractBalancedJsonObject(cleanedOutput || "");
+      if (!jsonCandidate) {
+        console.error("Resume SDK output (non-JSON):", String(outputText).slice(0, 2000));
+        return NextResponse.json({ error: "Gemini did not return valid JSON." }, { status: 500 });
       }
-      fields = JSON.parse(jsonMatch[0]) as ResumeFields;
+
+      let candidate = jsonCandidate;
+
+      try {
+        candidate = candidate.replace(/'([^']*)'/g, '"$1"');
+        candidate = candidate.replace(/([,{\s])([A-Za-z0-9_\-]+)\s*:/g, '$1"$2":');
+        candidate = candidate.replace(/,\s*([}\]])/g, '$1');
+
+        fields = JSON.parse(candidate) as ResumeFields;
+      } catch (secondErr) {
+        const err = new Error(
+          `Failed to parse JSON output from Gemini. Tried candidate: ${candidate.slice(0, 200)}...`
+        );
+        (err as any).cause = secondErr || firstErr;
+        console.error("Failed to parse JSON candidate for resume:", err);
+        return NextResponse.json({ error: "Failed to parse Gemini JSON output." }, { status: 500 });
+      }
     }
 
     const sanitizeSection = (html: string | undefined, fallback: string) => {
