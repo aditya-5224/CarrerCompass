@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Career Compass - Poster</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background: #0f172a;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 2rem;
+            color: white;
+        }
+
+        .poster-container {
+            width: 800px;
+            height: 1131px; /* A4 Ratio */
+            background: linear-gradient(135deg, #1e1b4b 0%, #0f172a 100%);
+            position: relative;
+            overflow: hidden;
+            border-radius: 24px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            display: flex;
+            flex-direction: column;
+            padding: 4rem;
+        }
+
+        /* Abstract Aurora Background */
+        .aurora {
+            position: absolute;
+            top: -20%;
+            left: -10%;
+            width: 140%;
+            height: 140%;
+            background: 
+                radial-gradient(circle at 20% 30%, rgba(99, 102, 241, 0.4) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(236, 72, 153, 0.3) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(56, 189, 248, 0.3) 0%, transparent 40%);
+            filter: blur(60px);
+            z-index: 0;
+        }
+
+        .content {
+            position: relative;
+            z-index: 1;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 8px 16px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 30px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: #38bdf8;
+            margin-bottom: 1.5rem;
+            backdrop-filter: blur(10px);
+        }
+
+        h1 {
+            font-size: 4.5rem;
+            font-weight: 800;
+            line-height: 1.1;
+            margin-bottom: 1rem;
+            background: linear-gradient(to right, #fff, #94a3b8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        h2 {
+            font-size: 1.8rem;
+            font-weight: 300;
+            color: #cbd5e1;
+            max-width: 80%;
+            margin: 0 auto;
+        }
+
+        .main-section {
+            display: flex;
+            gap: 2rem;
+            flex: 1;
+            margin-top: 2rem;
+        }
+
+        .left-col {
+            flex: 1.2;
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 2rem;
+            backdrop-filter: blur(20px);
+        }
+
+        .glass-card h3 {
+            font-size: 1.4rem;
+            color: #38bdf8;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .glass-card p {
+            font-size: 1rem;
+            line-height: 1.6;
+            color: #e2e8f0;
+        }
+
+        .features-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 1.2rem;
+        }
+
+        .features-list li {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            font-size: 1.1rem;
+            color: #f8fafc;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 1rem;
+            border-radius: 12px;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .check-icon {
+            color: #10b981;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        .bottom-section {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            margin-top: auto;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .mission {
+            flex: 1;
+            padding-right: 3rem;
+        }
+        
+        .mission h4 {
+            color: #ec4899;
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .mission p {
+            color: #cbd5e1;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        .qr-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+            background: white;
+            padding: 1.5rem;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            transform: rotate(2deg);
+        }
+
+        .qr-placeholder {
+            width: 150px;
+            height: 150px;
+            border: 2px dashed #94a3b8;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #64748b;
+            font-weight: 600;
+            text-align: center;
+            border-radius: 10px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .qr-placeholder img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .qr-text {
+            color: #0f172a;
+            font-weight: 800;
+            font-size: 1.2rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="poster-container">
+        <div class="aurora"></div>
+        
+        <div class="content">
+            <header>
+                <div class="badge">Next-Gen Technology</div>
+                <h1>Career Compass</h1>
+                <h2>AI-Powered Career Guidance Platform</h2>
+            </header>
+
+            <div class="main-section">
+                <div class="left-col">
+                    <div class="glass-card">
+                        <h3>About Us</h3>
+                        <p>Career Compass solves the problem of career confusion through a smart assessment system that combines aptitude analysis, psychological evaluation, and interest mapping to provide highly personalized career recommendations. We act as a digital mentor guiding you toward informed decisions.</p>
+                    </div>
+
+                    <ul class="features-list">
+                        <li><span class="check-icon">✓</span> AI-Powered Career Recommendations</li>
+                        <li><span class="check-icon">✓</span> Aptitude & Psychology Assessments</li>
+                        <li><span class="check-icon">✓</span> Interactive User Experience</li>
+                        <li><span class="check-icon">✓</span> Smart Skill & Interest Analysis</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="bottom-section">
+                <div class="mission">
+                    <h4>Our Mission</h4>
+                    <p>To bridge the gap between talent and opportunity by helping individuals discover careers where they can truly thrive. We make career guidance accessible, personalized, and technology-driven for every student.</p>
+                </div>
+                
+                <div class="qr-section">
+                    <!-- The user can replace the src below with the path to their actual QR code! -->
+                    <div class="qr-placeholder" id="qr-box">
+                        <img src="" id="user-qr" alt="Your QR Code" style="display: none;" />
+                        <span id="qr-hint">Put QR Code Image Here</span>
+                    </div>
+                    <div class="qr-text">Scan To Start</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Small script to let user click the placeholder to upload their QR code locally to view it -->
+    <script>
+        const qrBox = document.getElementById('qr-box');
+        const qrImg = document.getElementById('user-qr');
+        const qrHint = document.getElementById('qr-hint');
+
+        // Allow clicking the QR box to upload image
+        qrBox.addEventListener('click', () => {
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.accept = 'image/*';
+            input.onchange = e => {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = event => {
+                        qrImg.src = event.target.result;
+                        qrImg.style.display = 'block';
+                        qrHint.style.display = 'none';
+                    };
+                    reader.readAsDataURL(file);
+                }
+            };
+            input.click();
+        });
+    </script>
+</body>
+</html>

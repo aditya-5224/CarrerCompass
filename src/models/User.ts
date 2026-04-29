@@ -18,6 +18,11 @@ const UserSchema = new Schema({
     required: [true, "Firebase UID is required"],
     unique: true,
   },
+  authProvider: {
+    type: String,
+    enum: ["google", "email"],
+    default: "google",
+  },
   createdAt: {
     type: Date,
     default: Date.now,
