@@ -102,43 +102,13 @@ export default function AuthPage() {
 
   useEffect(() => {
     let unsubscribe: any;
-    let isHandlingRedirect = false;
 
-    const checkRedirectAndAuth = async () => {
-      try {
-        const result = await getRedirectResult(auth);
-        if (result && result.user) {
-          isHandlingRedirect = true;
-          setLoading(true);
-          
-          // Fire and forget database save (don't await) to remove lag!
-          saveUserToDB({
-            email: result.user.email,
-            displayName: result.user.displayName,
-            photoURL: result.user.photoURL,
-            uid: result.user.uid
-          }).catch(console.error);
-          
-          window.location.href = "/";
-          return;
-        }
-      } catch (err: any) {
-        console.error("RAW REDIRECT ERROR:", err);
-        setError(`[Redirect Result Error] ${err.code || 'UNKNOWN'}: ${err.message || err.toString()}`);
-        setLoading(false);
+    // Check if already logged in normally
+    unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        window.location.href = "/";
       }
-
-      // If no redirect result was found, check if already logged in normally
-      if (!isHandlingRedirect) {
-        unsubscribe = onAuthStateChanged(auth, (user) => {
-          if (user) {
-            window.location.href = "/";
-          }
-        });
-      }
-    };
-
-    checkRedirectAndAuth();
+    });
 
     return () => {
       if (unsubscribe) unsubscribe();
@@ -150,10 +120,23 @@ export default function AuthPage() {
     setError("");
     const provider = new GoogleAuthProvider();
     try {
-      await signInWithRedirect(auth, provider);
+      const result = await signInWithPopup(auth, provider);
+      
+      // Fire and forget database save to remove lag!
+      saveUserToDB({
+        email: result.user.email,
+        displayName: result.user.displayName,
+        photoURL: result.user.photoURL,
+        uid: result.user.uid
+      }).catch(console.error);
+      
+      window.location.href = "/";
     } catch (err: any) {
       console.error("RAW GOOGLE ERROR:", err);
-      setError(`[Google Login Error] ${err.code || 'UNKNOWN'}: ${err.message || err.toString()}`);
+      // Avoid showing error if user just closed the popup manually
+      if (err.code !== "auth/popup-closed-by-user") {
+        setError(`[Google Login Error] ${err.message || err.toString()}`);
+      }
       setLoading(false);
     }
   };
