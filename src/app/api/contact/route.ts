@@ -2,7 +2,6 @@ import { MailtrapClient } from "mailtrap";
 import { NextResponse } from "next/server";
 
 const TOKEN = process.env.MAILTRAP_TOKEN;
-const ENDPOINT = "https://send.api.mailtrap.io/";
 
 export async function POST(req: Request) {
   try {
@@ -13,7 +12,7 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Server configuration error" }, { status: 500 });
     }
 
-    const client = new MailtrapClient({ endpoint: ENDPOINT, token: TOKEN });
+    const client = new MailtrapClient({ token: TOKEN });
 
     const sender = {
       email: process.env.MAILTRAP_SENDER_EMAIL || "hello@demomailtrap.com",
