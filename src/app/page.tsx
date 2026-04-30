@@ -324,9 +324,34 @@ export default function Home() {
             </div>
           ) : currentUser ? (
             <div style={{ display: "flex", gap: "1rem", alignItems: "center" }}>
-              <span style={{ color: "white", fontWeight: "bold" }}>
-                Welcome, {currentUser.displayName || currentUser.email?.split("@")[0]}!
-              </span>
+              <Link 
+                href="/profile" 
+                target="_blank"
+                style={{ 
+                  display: "flex", 
+                  alignItems: "center", 
+                  justifyContent: "center", 
+                  width: "40px", 
+                  height: "40px", 
+                  borderRadius: "50%", 
+                  background: "linear-gradient(135deg, #4f46e5, #ec4899)", 
+                  color: "white", 
+                  fontWeight: "bold", 
+                  textDecoration: "none", 
+                  boxShadow: "0 4px 10px rgba(79, 70, 229, 0.3)",
+                  fontSize: "1.2rem",
+                  transition: "transform 0.2s ease"
+                }}
+                onMouseOver={(e) => e.currentTarget.style.transform = "scale(1.1)"} 
+                onMouseOut={(e) => e.currentTarget.style.transform = "scale(1)"}
+                title="View Profile"
+              >
+                {currentUser?.photoURL ? (
+                  <img src={currentUser.photoURL} alt="Profile" style={{ width: "100%", height: "100%", borderRadius: "50%", objectFit: "cover" }} />
+                ) : (
+                  (currentUser?.displayName || currentUser?.email || "U")[0].toUpperCase()
+                )}
+              </Link>
               <button 
                 onClick={async () => {
                   await signOut(auth);

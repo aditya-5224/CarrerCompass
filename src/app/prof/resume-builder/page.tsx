@@ -117,20 +117,45 @@ export default function ResumeBuilder() {
     }
   };
 
-  const handleDownloadTailored = () => {
+  const handleDownloadTailored = async () => {
     if (!tailoredResumeHtml) {
       return;
     }
 
-    const blob = new Blob([tailoredResumeHtml], { type: "text/html;charset=utf-8" });
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement("a");
-    link.href = url;
-    link.download = "tailored-resume.html";
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    URL.revokeObjectURL(url);
+    setState("generating");
+    try {
+      const plainText = tailoredResumeHtml
+        .replace(/<style[\s\S]*?<\/style>/gi, "")
+        .replace(/<script[\s\S]*?<\/script>/gi, "")
+        .replace(/<[^>]+>/g, "\n")
+        .replace(/\n\s*\n/g, "\n\n")
+        .trim();
+
+      const response = await fetch("/api/resume-builder/pdf", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ text: plainText })
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to generate PDF");
+      }
+
+      const blob = await response.blob();
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = "tailored-resume.pdf";
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+    } catch (err) {
+      console.error("PDF download error:", err);
+      setError("Could not download PDF.");
+    } finally {
+      setState("idle");
+    }
   };
 
   const displayText = activeView === "tailored" ? tailoredResumeHtml : resumeText;
@@ -239,8 +264,8 @@ export default function ResumeBuilder() {
               <button className={styles.secondaryButton} onClick={handleCopyTailored} disabled={!tailoredResumeHtml}>
                 Copy Tailored
               </button>
-              <button className={styles.secondaryButton} onClick={handleDownloadTailored} disabled={!tailoredResumeHtml}>
-                Download .html
+              <button className={styles.secondaryButton} onClick={handleDownloadTailored} disabled={!tailoredResumeHtml || state === "generating"}>
+                {state === "generating" ? "Generating PDF..." : "Download PDF"}
               </button>
             </div>
           </div>
