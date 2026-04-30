@@ -21,7 +21,7 @@ const resumeTemplate = `
   <title>Single Page Resume</title>
   <style>
     @page {
-      margin: 2.5cm !important;
+      margin: 1cm !important;
       size: A4;
     }
     * {
@@ -30,25 +30,30 @@ const resumeTemplate = `
       padding: 0;
     }
     html, body {
-      font-family: "Calibri", "Arial", sans-serif;
-      font-size: 12.75pt;
-      line-height: 1.05;
-      margin: 0;
-      padding: 0;
-      color: #000;
+      font-family: "Calibri", "Helvetica", "Arial", sans-serif;
+      font-size: 10pt;
+      line-height: 1.2;
+      margin: 0 auto;
+      padding: 10mm;
+      color: black !important;
       width: 100%;
+      max-width: 210mm;
+      box-sizing: border-box;
+      background: white !important;
     }
     h1 {
-      font-size: 30pt;
+      font-size: 22pt;
       font-weight: bold;
-      margin: 0 0 1pt 0;
+      margin: 0 0 2pt 0;
       text-align: center;
+      color: black !important;
     }
     .address {
-      font-size: 11.25pt;
+      font-size: 9.5pt;
       text-align: center;
-      margin-bottom: 3pt;
+      margin-bottom: 6pt;
       display: block;
+      color: black !important;
     }
     .address div {
       display: inline;
@@ -56,27 +61,28 @@ const resumeTemplate = `
     }
     .section {
       margin-top: 4pt;
-      margin-bottom: 3pt;
+      margin-bottom: 4pt;
       page-break-inside: avoid;
       break-inside: avoid;
     }
     .section h2 {
-      font-size: 13.5pt;
+      font-size: 12pt;
       font-weight: bold;
-      border-bottom: 1px solid #000;
-      margin-bottom: 1pt;
-      padding-bottom: 0pt;
+      border-bottom: 1px solid black;
+      margin-bottom: 3pt;
+      padding-bottom: 1pt;
       text-transform: uppercase;
+      color: black !important;
       page-break-after: avoid;
     }
     .entry {
-      margin-bottom: 3pt;
+      margin-bottom: 4pt;
       page-break-inside: avoid;
       break-inside: avoid;
     }
-    .bold { font-weight: bold; }
-    .italic { font-style: italic; }
-    .right { float: right; }
+    .bold { font-weight: bold; color: black !important; }
+    .italic { font-style: italic; color: black !important; }
+    .right { float: right; color: black !important; }
     ul {
       margin: 2pt 0 4pt 10pt;
       padding: 0;

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { AuthProvider } from "@/context/AuthContext";
+import Navbar from "@/components/Navbar";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -14,8 +15,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "CarrerCompass | Authentication",
-  description: "Secure authentication for CarrerCompass",
+  title: "CareerCompass | Your AI Career Navigator",
+  description: "AI-powered career platform — resumes, roadmaps, skill tests & job matching.",
 };
 
 export default function RootLayout({
@@ -25,8 +26,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={`${geistSans.variable} ${geistMono.variable}`}>
-      <body>
+      <body style={{ paddingTop: "62px" }}>
         <AuthProvider>
+          <Navbar />
           {children}
         </AuthProvider>
       </body>

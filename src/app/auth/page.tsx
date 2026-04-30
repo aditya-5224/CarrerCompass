@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useMemo, useEffect } from "react";
-import { 
+import {
   signInWithPopup,
   signInWithRedirect,
   getRedirectResult,
@@ -121,7 +121,7 @@ export default function AuthPage() {
     const provider = new GoogleAuthProvider();
     try {
       const result = await signInWithPopup(auth, provider);
-      
+
       // Fire and forget database save to remove lag!
       saveUserToDB({
         email: result.user.email,
@@ -129,7 +129,7 @@ export default function AuthPage() {
         photoURL: result.user.photoURL,
         uid: result.user.uid
       }).catch(console.error);
-      
+
       window.location.href = "/";
     } catch (err: any) {
       console.error("RAW GOOGLE ERROR:", err);
@@ -268,12 +268,12 @@ export default function AuthPage() {
         <motion.h1 className={styles.title}
           initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}>
-          Carrer<br />Compass.
+          Career<br />Compass.
         </motion.h1>
         <motion.p className={styles.heroDescription}
           initial={{ opacity: 0 }} animate={{ opacity: 1 }}
           transition={{ delay: 0.4 }}>
-          Harness the power of advanced AI to navigate your career path with precision. 
+          Harness the power of advanced AI to navigate your career path with precision.
           Analyze market trends, optimize your resume, and connect with opportunities instantly.
         </motion.p>
         <div className={styles.features}>
@@ -318,7 +318,7 @@ export default function AuthPage() {
 
               {error && (
                 <div style={{ background: "rgba(255,0,0,0.2)", border: "2px solid red", padding: "15px", borderRadius: "8px", margin: "10px 0", color: "white", fontSize: "0.85rem", wordWrap: "break-word" }}>
-                  <strong>Error Details:</strong><br/>
+                  <strong>Error Details:</strong><br />
                   {error}
                 </div>
               )}
