@@ -2,6 +2,7 @@
 
 import React from "react";
 import { motion } from "framer-motion";
+import emailjs from "@emailjs/browser";
 import styles from "../app/HomePage.module.css";
 
 export default function Feedback() {
@@ -22,15 +23,20 @@ export default function Feedback() {
     };
 
     try {
-      const res = await fetch("/api/contact", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
-      });
+      const result = await emailjs.send(
+        process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID || "",
+        process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID || "",
+        {
+          from_name: data.name,
+          from_email: data.email,
+          phone_number: data.phone,
+          message: data.query,
+        },
+        process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY || ""
+      );
 
-      if (!res.ok) {
-        const err = await res.json();
-        throw new Error(err.error || "Something went wrong");
+      if (result.status !== 200) {
+        throw new Error("Failed to send email");
       }
 
       setStatus("success");
