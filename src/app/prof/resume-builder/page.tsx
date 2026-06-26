@@ -299,7 +299,7 @@ export default function ResumeBuilder() {
         // 800px width * (297/210) = 1131px target height
         let currentSize = 10.5;
         let currentPadding = 12;
-        
+
         while (element.scrollHeight > 1131 && currentSize > 6.5) {
           currentSize -= 0.5;
           currentPadding -= 0.5;
@@ -319,7 +319,7 @@ export default function ResumeBuilder() {
         // 3. Calculate scaling to fit perfectly on ONE page
         const pdfWidth = pdf.internal.pageSize.getWidth();
         const pdfHeight = pdf.internal.pageSize.getHeight();
-        
+
         const imgData = canvas.toDataURL("image/jpeg", 1.0);
         const canvasWidth = canvas.width;
         const canvasHeight = canvas.height;
@@ -328,7 +328,7 @@ export default function ResumeBuilder() {
         const ratioWidth = pdfWidth / canvasWidth;
         // Ratio to fit height
         const ratioHeight = pdfHeight / canvasHeight;
-        
+
         // Use the smaller ratio so it fits entirely on ONE page
         const ratio = Math.min(ratioWidth, ratioHeight);
 

@@ -11,7 +11,9 @@ import {
   Map, 
   FileText, 
   Users,
-  Globe
+  Globe,
+  Sparkles,
+  Telescope
 } from "lucide-react";
 import styles from "../app/HomePage.module.css";
 
@@ -179,6 +181,24 @@ export default function SelectionSection({ view, setView, language, handleLangua
             </p>
           </div>
         </MotionLink>
+        <MotionLink 
+          href="/student/galaxy" 
+          className={styles.card}
+          variants={itemVariants}
+          whileHover={{ y: -15, scale: 1.02 }}
+        >
+          <div className={styles.cardInner}>
+            <div className={styles.iconWrapper}>
+              <Telescope size={48} />
+            </div>
+            <h2 className={styles.cardTitle}>{language === "hi" ? "करियर गैलेक्सी" : "Career Galaxy"}</h2>
+            <p className={styles.cardDescription}>
+              {language === "hi" 
+                ? "अपनी स्ट्रीम का पूरा सफर — सेमेस्टर, स्किल्स और अवसर।" 
+                : "Explore your full stream journey — subjects, skills & career opportunities."}
+            </p>
+          </div>
+        </MotionLink>
       </motion.div>
     </motion.div>
   );
@@ -233,6 +253,20 @@ export default function SelectionSection({ view, setView, language, handleLangua
             </div>
             <h2 className={styles.cardTitle}>Connect</h2>
             <p className={styles.cardDescription}>Direct pathways to internships that match your verified skill set.</p>
+          </div>
+        </MotionLink>
+        <MotionLink 
+          href="/prof/interview" 
+          className={styles.card}
+          variants={itemVariants}
+          whileHover={{ y: -15, scale: 1.02 }}
+        >
+          <div className={styles.cardInner}>
+            <div className={styles.iconWrapper}>
+              <Sparkles size={48} />
+            </div>
+            <h2 className={styles.cardTitle}>Interview Lab</h2>
+            <p className={styles.cardDescription}>Master the art of the interview with our elite AI coach.</p>
           </div>
         </MotionLink>
       </motion.div>

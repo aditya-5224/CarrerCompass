@@ -12,6 +12,7 @@
     "@emailjs/browser": "^4.4.1",
     "@google/generative-ai": "^0.24.1",
     "@types/pdfkit": "^0.17.6",
+    "@vladmandic/face-api": "^1.7.15",
     "firebase": "^12.12.1",
     "framer-motion": "^12.38.0",
     "html2canvas": "^1.4.1",
