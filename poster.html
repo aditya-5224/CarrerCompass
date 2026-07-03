@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Career Compass - Modern Pitch Deck</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        body {
+            background-color: #050505;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 2rem;
+            color: white;
+        }
+
+        .poster-container {
+            width: 850px;
+            height: 1200px;
+            background: #0a0a0a;
+            position: relative;
+            overflow: hidden;
+            border-radius: 32px;
+            box-shadow: 0 40px 100px -20px rgba(99, 102, 241, 0.15), inset 0 0 0 1px rgba(255,255,255,0.05);
+            display: flex;
+            flex-direction: column;
+            padding: 4rem 3.5rem;
+        }
+
+        /* Complex Mesh Gradient Background */
+        .mesh-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            opacity: 0.6;
+        }
+        
+        .orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+        }
+        
+        .orb-1 {
+            top: -10%; left: -10%;
+            width: 500px; height: 500px;
+            background: rgba(99, 102, 241, 0.4);
+        }
+        
+        .orb-2 {
+            bottom: -20%; right: -10%;
+            width: 600px; height: 600px;
+            background: rgba(236, 72, 153, 0.25);
+        }
+
+        .orb-3 {
+            top: 40%; left: 60%;
+            width: 400px; height: 400px;
+            background: rgba(56, 189, 248, 0.2);
+        }
+
+        /* Noise Texture */
+        .noise {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+            opacity: 0.03;
+            z-index: 1;
+            mix-blend-mode: overlay;
+        }
+
+        .content {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        /* HEADER */
+        header {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            margin-bottom: 3.5rem;
+        }
+
+        .pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 16px;
+            background: rgba(99, 102, 241, 0.1);
+            border: 1px solid rgba(99, 102, 241, 0.2);
+            border-radius: 100px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #818cf8;
+            margin-bottom: 1.5rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .pill-dot {
+            width: 6px; height: 6px;
+            background: #818cf8;
+            border-radius: 50%;
+            box-shadow: 0 0 10px #818cf8;
+        }
+
+        h1 {
+            font-size: 4.5rem;
+            font-weight: 800;
+            line-height: 1;
+            letter-spacing: -2px;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, #ffffff 0%, #a5b4fc 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        h2 {
+            font-size: 1.5rem;
+            font-weight: 400;
+            color: #94a3b8;
+            max-width: 80%;
+            line-height: 1.4;
+        }
+
+        /* BENTO BOX GRID */
+        .bento-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            grid-template-rows: auto auto;
+            gap: 1.5rem;
+            flex: 1;
+        }
+
+        .bento-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 24px;
+            padding: 2rem;
+            backdrop-filter: blur(20px);
+            box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.05);
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .bento-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+        }
+
+        /* Specific Cards */
+        .card-about {
+            grid-column: span 2;
+        }
+
+        .card-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.2rem;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .card-icon svg {
+            width: 24px; height: 24px;
+            stroke: #38bdf8;
+            fill: none;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        .card-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #f8fafc;
+            margin-bottom: 0.8rem;
+        }
+
+        .card-text {
+            font-size: 1rem;
+            color: #cbd5e1;
+            line-height: 1.6;
+        }
+
+        .feature-list {
+            list-style: none;
+            margin-top: 1rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+        }
+
+        .feature-list li {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #e2e8f0;
+            font-size: 0.95rem;
+        }
+
+        .feature-list li svg {
+            width: 18px; height: 18px;
+            stroke: #10b981;
+        }
+
+        /* BOTTOM SECTION */
+        .footer-section {
+            margin-top: 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: stretch;
+            gap: 1.5rem;
+            height: 220px;
+        }
+
+        .mission-card {
+            flex: 1.5;
+            background: linear-gradient(145deg, rgba(236, 72, 153, 0.1), rgba(0,0,0,0));
+            border: 1px solid rgba(236, 72, 153, 0.2);
+            border-radius: 24px;
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .mission-card .card-title {
+            color: #f472b6;
+        }
+
+        .qr-card {
+            flex: 1;
+            background: white;
+            border-radius: 24px;
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .qr-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(255,255,255,0.1);
+        }
+
+        .qr-frame {
+            width: 140px;
+            height: 140px;
+            border: 2px dashed #cbd5e1;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .qr-frame img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            position: absolute;
+        }
+
+        .qr-hint {
+            color: #64748b;
+            font-size: 0.85rem;
+            font-weight: 500;
+            text-align: center;
+            padding: 0 10px;
+        }
+
+        .qr-cta {
+            color: #0f172a;
+            font-weight: 800;
+            font-size: 1.3rem;
+            letter-spacing: -0.5px;
+        }
+
+        .qr-scan-line {
+            position: absolute;
+            width: 100%;
+            height: 3px;
+            background: #38bdf8;
+            box-shadow: 0 0 10px #38bdf8;
+            top: 0;
+            animation: scan 2s infinite linear;
+            display: none;
+        }
+
+        @keyframes scan {
+            0% { top: 0; opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { top: 100%; opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="poster-container">
+        <!-- Background Elements -->
+        <div class="mesh-bg">
+            <div class="orb orb-1"></div>
+            <div class="orb orb-2"></div>
+            <div class="orb orb-3"></div>
+        </div>
+        <div class="noise"></div>
+
+        <div class="content">
+            <!-- Header -->
+            <header>
+                <div class="pill">
+                    <div class="pill-dot"></div>
+                    Next-Gen AI Core
+                </div>
+                <h1>Career Compass</h1>
+                <h2>The AI-powered guidance platform that decodes your potential and maps your path to success.</h2>
+            </header>
+
+            <!-- Bento Grid Features -->
+            <div class="bento-grid">
+                
+                <div class="bento-card card-about">
+                    <div class="card-icon">
+                        <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+                    </div>
+                    <h3 class="card-title">Intelligent Assessment</h3>
+                    <p class="card-text">
+                        We move beyond generic advice. Career Compass uses an advanced smart assessment system combining aptitude analysis, psychological evaluation, and interest mapping to provide highly personalized career recommendations tailored to your unique psychological blueprint.
+                    </p>
+                </div>
+
+                <div class="bento-card">
+                    <div class="card-icon" style="background: rgba(16, 185, 129, 0.1); border-color: rgba(16, 185, 129, 0.2);">
+                        <svg viewBox="0 0 24 24" style="stroke: #10b981;"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg>
+                    </div>
+                    <h3 class="card-title">Platform Features</h3>
+                    <ul class="feature-list">
+                        <li><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg> AI Career Recommendations</li>
+                        <li><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg> Deep Psychology Profiling</li>
+                        <li><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg> Smart Skill Analysis</li>
+                    </ul>
+                </div>
+
+                <div class="bento-card">
+                    <div class="card-icon" style="background: rgba(244, 63, 94, 0.1); border-color: rgba(244, 63, 94, 0.2);">
+                        <svg viewBox="0 0 24 24" style="stroke: #f43f5e;"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                    </div>
+                    <h3 class="card-title">Why Us?</h3>
+                    <p class="card-text">
+                        Unlike traditional platforms, we act as a secure digital mentor. Experience an interactive, data-driven journey toward informed and confident career decisions.
+                    </p>
+                </div>
+
+            </div>
+
+            <!-- Footer & QR -->
+            <div class="footer-section">
+                <div class="mission-card">
+                    <h3 class="card-title">Our Mission</h3>
+                    <p class="card-text">
+                        To bridge the gap between talent and opportunity. We believe the right guidance can change lives, and every student deserves access to smart, personalized career support where they can truly thrive.
+                    </p>
+                </div>
+                
+                <div class="qr-card" id="qr-upload-btn">
+                    <div class="qr-frame">
+                        <div class="qr-scan-line" id="scan-line"></div>
+                        <span class="qr-hint" id="qr-hint">Click to Add QR Code</span>
+                        <img id="user-qr" src="" style="display: none;" />
+                    </div>
+                    <span class="qr-cta">Scan to Start</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Interactive QR Upload
+        const qrBtn = document.getElementById('qr-upload-btn');
+        const qrImg = document.getElementById('user-qr');
+        const qrHint = document.getElementById('qr-hint');
+        const scanLine = document.getElementById('scan-line');
+
+        qrBtn.addEventListener('click', () => {
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.accept = 'image/*';
+            input.onchange = e => {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = event => {
+                        qrImg.src = event.target.result;
+                        qrImg.style.display = 'block';
+                        qrHint.style.display = 'none';
+                        scanLine.style.display = 'block'; // Add scanning animation effect
+                        qrBtn.style.border = 'none';
+                    };
+                    reader.readAsDataURL(file);
+                }
+            };
+            input.click();
+        });
+    </script>
+</body>
+</html>

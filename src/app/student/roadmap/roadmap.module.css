@@ -1,0 +1,911 @@
+.page {
+  --theme-accent: #818cf8;
+  --theme-accent-soft: rgba(129, 140, 248, 0.18);
+  position: relative;
+  min-height: 100vh;
+  overflow: hidden;
+  color: #e5eefb;
+  background:
+    radial-gradient(circle at 10% 10%, rgba(99, 102, 241, 0.22), transparent 26%),
+    radial-gradient(circle at 90% 18%, rgba(244, 114, 182, 0.16), transparent 24%),
+    linear-gradient(180deg, #070b16 0%, #090d18 100%);
+  font-family: var(--font-geist-sans), system-ui, sans-serif;
+}
+
+.theme0 { --theme-accent: #22d3ee; --theme-accent-soft: rgba(34, 211, 238, 0.18); }
+.theme1 { --theme-accent: #818cf8; --theme-accent-soft: rgba(129, 140, 248, 0.18); }
+.theme2 { --theme-accent: #6ee7b7; --theme-accent-soft: rgba(110, 231, 183, 0.18); }
+.theme3 { --theme-accent: #f472b6; --theme-accent-soft: rgba(244, 114, 182, 0.18); }
+.theme4 { --theme-accent: #fb923c; --theme-accent-soft: rgba(251, 146, 60, 0.18); }
+.theme5 { --theme-accent: #38bdf8; --theme-accent-soft: rgba(56, 189, 248, 0.18); }
+.theme6 { --theme-accent: #a78bfa; --theme-accent-soft: rgba(167, 139, 250, 0.18); }
+.theme7 { --theme-accent: #4ade80; --theme-accent-soft: rgba(74, 222, 128, 0.18); }
+
+.phaseColor0 { --phase-accent: #22d3ee; --phase-accent-soft: rgba(34, 211, 238, 0.18); }
+.phaseColor1 { --phase-accent: #818cf8; --phase-accent-soft: rgba(129, 140, 248, 0.18); }
+.phaseColor2 { --phase-accent: #6ee7b7; --phase-accent-soft: rgba(110, 231, 183, 0.18); }
+.phaseColor3 { --phase-accent: #f472b6; --phase-accent-soft: rgba(244, 114, 182, 0.18); }
+.phaseColor4 { --phase-accent: #fb923c; --phase-accent-soft: rgba(251, 146, 60, 0.18); }
+.phaseColor5 { --phase-accent: #38bdf8; --phase-accent-soft: rgba(56, 189, 248, 0.18); }
+.phaseColor6 { --phase-accent: #a78bfa; --phase-accent-soft: rgba(167, 139, 250, 0.18); }
+.phaseColor7 { --phase-accent: #4ade80; --phase-accent-soft: rgba(74, 222, 128, 0.18); }
+
+.auroraOne,
+.auroraTwo {
+  position: fixed;
+  pointer-events: none;
+  border-radius: 999px;
+  filter: blur(80px);
+  opacity: 0.4;
+}
+
+.auroraOne {
+  top: 10%;
+  left: -6rem;
+  width: 18rem;
+  height: 18rem;
+  background: rgba(129, 140, 248, 0.22);
+}
+
+.auroraTwo {
+  right: -5rem;
+  bottom: 8%;
+  width: 20rem;
+  height: 20rem;
+  background: rgba(110, 231, 183, 0.16);
+}
+
+.navbar {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(8, 12, 24, 0.88);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+
+.navInner {
+  max-width: 1280px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  align-items: center;
+  gap: 20px;
+  padding: 16px 24px;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.brandMark {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 14px;
+  color: white;
+  background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+  box-shadow: 0 16px 30px rgba(99, 102, 241, 0.28);
+}
+
+.brandLabel,
+.progressBlock span,
+.heroCopy p,
+.heroMetric span,
+.phaseHeaderCopy p,
+.phaseOverview,
+.phaseDurationPill,
+.stepHeaderCopy p,
+.stepDescription,
+.detailPanel p,
+.detailPanel li,
+.loadingCard p,
+.emptyPreviewCard p,
+.insightList,
+.insightCard p,
+.insightCardAccent p,
+.infoCard p {
+  color: rgba(226, 232, 240, 0.72);
+}
+
+.brandLabel {
+  display: block;
+  margin-bottom: 4px;
+  font-size: 12px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.brand strong {
+  display: block;
+  font-size: 1.05rem;
+  line-height: 1.2;
+}
+
+.progressBlock {
+  min-width: 240px;
+}
+
+.progressRingRow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.progressRingRow strong {
+  display: block;
+  color: #f8fbff;
+  font-size: 0.95rem;
+}
+
+.progressRingRow span {
+  display: block;
+}
+
+.progressTrack {
+  width: 100%;
+  height: 10px;
+  margin-bottom: 6px;
+  border-radius: 999px;
+  overflow: hidden;
+  background: rgba(148, 163, 184, 0.16);
+}
+
+.progressFill {
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, #6ee7b7, #818cf8);
+  transition: width 0.45s ease;
+}
+
+.progressRing {
+  transform: rotate(-90deg);
+}
+
+.progressTrackCircle {
+  fill: none;
+  stroke: rgba(148, 163, 184, 0.16);
+  stroke-width: 4;
+}
+
+.progressValueCircle {
+  fill: none;
+  stroke-width: 4;
+  stroke-linecap: round;
+  transition: stroke-dashoffset 0.45s ease;
+  stroke: var(--theme-accent);
+}
+
+.navActions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.secondaryButton,
+.toggleButton,
+.tabButton,
+.newRoadmapButton,
+.suggestionChip {
+  border: 1px solid transparent;
+  font: inherit;
+  transition: all 0.2s ease;
+}
+
+.secondaryButton,
+.tabButton,
+.newRoadmapButton,
+.suggestionChip {
+  background: rgba(255, 255, 255, 0.04);
+  color: #e2e8f0;
+}
+
+.secondaryButton:hover,
+.tabButton:hover,
+.newRoadmapButton:hover,
+.suggestionChip:hover,
+.toggleButton:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+.secondaryButton,
+.newRoadmapButton {
+  padding: 10px 14px;
+  border-radius: 14px;
+}
+
+.secondaryButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.main {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 42px 24px 60px;
+  display: grid;
+  gap: 26px;
+}
+
+.heroSection {
+  display: grid;
+  grid-template-columns: 1.2fr 0.8fr;
+  gap: 22px;
+  align-items: stretch;
+}
+
+.heroCopy,
+.heroPanel,
+.statCard,
+.phaseBlock,
+.loadingCard,
+.insightCard,
+.insightCardAccent,
+.infoCard,
+.completedBanner,
+.detailPanel,
+.emptyPreviewCard {
+  background: rgba(11, 17, 32, 0.76);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.28);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+}
+
+.heroCopy {
+  border-radius: 30px;
+  padding: 30px;
+  display: grid;
+  gap: 18px;
+}
+
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  width: fit-content;
+  padding: 7px 12px;
+  border-radius: 999px;
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #dbeafe;
+  background: rgba(99, 102, 241, 0.15);
+  border: 1px solid rgba(99, 102, 241, 0.25);
+}
+
+.heroCopy h1 {
+  font-size: clamp(2.5rem, 5vw, 4.8rem);
+  line-height: 0.98;
+  letter-spacing: -0.05em;
+  max-width: 12ch;
+}
+
+.heroCopy p {
+  font-size: 1.05rem;
+  line-height: 1.8;
+  max-width: 60ch;
+}
+
+.inputRow {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.input {
+  flex: 1;
+  min-width: 260px;
+  min-height: 54px;
+  padding: 0 18px;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #f8fbff;
+  font-size: 1rem;
+  outline: none;
+}
+
+.input::placeholder {
+  color: #94a3b8;
+}
+
+.input:focus {
+  border-color: rgba(99, 102, 241, 0.7);
+  box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.15);
+}
+
+.primaryButton {
+  min-height: 54px;
+  padding: 0 18px;
+  border-radius: 16px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  color: #070c16;
+  font-weight: 800;
+  background: linear-gradient(135deg, #8be6ff 0%, #7c8cff 48%, #c084fc 100%);
+  box-shadow: 0 20px 40px rgba(99, 102, 241, 0.28);
+}
+
+.primaryButton:hover {
+  transform: translateY(-1px);
+}
+
+.primaryButton:disabled {
+  cursor: wait;
+  opacity: 0.72;
+  transform: none;
+}
+
+.notice {
+  color: #a7f3d0;
+  font-size: 0.95rem;
+}
+
+.errorText {
+  color: #fca5a5;
+  font-size: 0.95rem;
+}
+
+.suggestionRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.suggestionChip {
+  padding: 9px 16px;
+  border-radius: 999px;
+  border-color: rgba(255, 255, 255, 0.08);
+  color: #dbeafe;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.suggestionIcon {
+  font-size: 0.95rem;
+}
+
+.heroPanel {
+  border-radius: 30px;
+  padding: 24px;
+  display: grid;
+  gap: 14px;
+}
+
+.heroEmptyState {
+  display: grid;
+  gap: 14px;
+}
+
+.heroMetric,
+.heroMetricAccent,
+.emptyPreviewCard {
+  border-radius: 20px;
+  padding: 18px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.heroMetric strong,
+.heroMetricAccent strong,
+.statCard strong,
+.completedBanner h2,
+.infoCard h2,
+.insightCardAccent strong,
+.phaseHeaderCopy h2,
+.stepHeaderCopy h3 {
+  color: #f8fbff;
+}
+
+.heroMetric strong {
+  margin-top: 8px;
+  font-size: 1.1rem;
+}
+
+.heroMetricAccent {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.heroMetricAccent strong {
+  margin-top: 3px;
+  font-size: 1.2rem;
+}
+
+.detailPanel {
+  border-radius: 22px;
+  padding: 18px;
+  background: rgba(255, 255, 255, 0.035);
+}
+
+.detailLabel {
+  display: inline-flex;
+  margin-bottom: 10px;
+  color: #cbd5e1;
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.detailPanel ul {
+  display: grid;
+  gap: 10px;
+  margin-top: 14px;
+  padding-left: 18px;
+}
+
+.statsGrid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.statCard {
+  border-radius: 22px;
+  padding: 18px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.statCard span {
+  display: block;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: #94a3b8;
+}
+
+.tabsRow {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.tabButton,
+.newRoadmapButton {
+  padding: 9px 18px;
+  border-radius: 12px;
+  cursor: pointer;
+}
+
+.tabButtonActive {
+  color: var(--theme-accent);
+  border-color: rgba(129, 140, 248, 0.4);
+  background: rgba(129, 140, 248, 0.12);
+  font-weight: 700;
+}
+
+.newRoadmapButton {
+  margin-left: auto;
+}
+
+.roadmapSection {
+  display: grid;
+  gap: 16px;
+}
+
+.phaseBlock {
+  border-radius: 24px;
+  padding: 22px 24px;
+}
+
+.phaseHeader {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 16px;
+}
+
+.phaseHeaderCopy {
+  flex: 1;
+}
+
+.phaseMetaRow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.phaseLabel {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: #64748b;
+}
+
+.phaseDurationPill {
+  font-size: 11px;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.phaseOverview {
+  margin: 0 0 16px;
+  font-size: 0.88rem;
+  line-height: 1.7;
+}
+
+.timeline {
+  display: grid;
+  gap: 10px;
+}
+
+.stepCard {
+  position: relative;
+  overflow: hidden;
+  border-radius: 20px;
+  padding: 20px 22px;
+  cursor: pointer;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.stepCard::before {
+  content: "";
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 3px;
+  background: var(--phase-accent);
+  opacity: 0.55;
+}
+
+.stepCardComplete {
+  background: linear-gradient(135deg, rgba(110, 231, 183, 0.07), rgba(110, 231, 183, 0.03));
+  border-color: rgba(110, 231, 183, 0.22);
+}
+
+.stepCardComplete::before {
+  opacity: 1;
+  background: #6ee7b7;
+}
+
+.stepCardExpanded {
+  border-color: rgba(255, 255, 255, 0.12);
+}
+
+.stepTopRow {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+}
+
+.stepIndex {
+  min-width: 38px;
+  height: 38px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--phase-accent);
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+.stepIndexComplete {
+  color: #6ee7b7;
+  background: rgba(110, 231, 183, 0.15);
+  border-color: rgba(110, 231, 183, 0.3);
+}
+
+.stepHeaderCopy {
+  flex: 1;
+  min-width: 0;
+}
+
+.stepHeaderCopy h3 {
+  margin: 0;
+  font-size: 0.97rem;
+  line-height: 1.3;
+}
+
+.stepHeaderCopy p {
+  margin: 6px 0 0;
+  font-size: 0.87rem;
+  line-height: 1.6;
+}
+
+.stepHeaderMeta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.stepPill {
+  font-size: 11px;
+  padding: 3px 10px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: #94a3b8;
+}
+
+.stepChevron {
+  color: #64748b;
+  font-size: 14px;
+}
+
+.stepExpandedBody {
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+.stepDescription {
+  margin: 0 0 14px;
+  font-size: 0.88rem;
+  line-height: 1.75;
+}
+
+.detailGroup {
+  margin-bottom: 14px;
+}
+
+.groupLabel {
+  margin: 0 0 8px;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: #64748b;
+}
+
+.taskList {
+  display: grid;
+  gap: 6px;
+}
+
+.taskItem {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  font-size: 0.87rem;
+  color: #94a3b8;
+}
+
+.taskBullet {
+  color: var(--phase-accent);
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.chipRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+}
+
+.resourceChip,
+.skillChip {
+  padding: 5px 11px;
+  border-radius: 999px;
+  font-size: 0.82rem;
+}
+
+.resourceChip {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #dbeafe;
+}
+
+.skillChip {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #e2e8f0;
+}
+
+.toggleButton {
+  margin-top: 4px;
+  padding: 9px 18px;
+  border-radius: 12px;
+  border-color: rgba(255, 255, 255, 0.08);
+  cursor: pointer;
+  font-size: 0.85rem;
+  font-weight: 700;
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--phase-accent);
+}
+
+.loadingShell {
+  display: grid;
+  place-items: center;
+  padding: 40px 0;
+}
+
+.loadingCard {
+  width: min(100%, 520px);
+  border-radius: 20px;
+  padding: 18px;
+  text-align: center;
+}
+
+.loadingSpinner {
+  width: 64px;
+  height: 64px;
+  border-radius: 999px;
+  margin: 0 auto 18px;
+  border: 3px solid rgba(255, 255, 255, 0.08);
+  border-top: 3px solid var(--theme-accent);
+  animation: spin 1s linear infinite;
+}
+
+.completedBanner {
+  text-align: center;
+  padding: 40px 24px;
+  border-radius: 24px;
+  background: linear-gradient(135deg, rgba(110, 231, 183, 0.08), rgba(129, 140, 248, 0.06));
+  border-color: rgba(110, 231, 183, 0.2);
+}
+
+.completedIcon {
+  font-size: 48px;
+  margin-bottom: 12px;
+}
+
+.infoCard {
+  border-radius: 24px;
+  padding: 28px;
+}
+
+.toolGrid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.toolChip {
+  padding: 14px 20px;
+  border-radius: 16px;
+  font-weight: 700;
+  font-size: 0.95rem;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: var(--theme-accent);
+}
+
+.outcomeList {
+  display: grid;
+  gap: 12px;
+}
+
+.outcomeItem {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 18px 20px;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.outcomeIndex {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  font-size: 14px;
+  color: var(--theme-accent);
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  font-weight: 800;
+}
+
+.bottomGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.insightCard,
+.insightCardAccent {
+  border-radius: 22px;
+  padding: 18px;
+}
+
+.sectionMiniHeader {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+  color: #cbd5e1;
+  font-size: 0.9rem;
+}
+
+.insightList {
+  display: grid;
+  gap: 10px;
+  margin: 0;
+  padding-left: 18px;
+  line-height: 1.7;
+}
+
+.insightCardAccent strong {
+  display: block;
+  margin-bottom: 8px;
+  color: var(--theme-accent);
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (max-width: 1024px) {
+  .navInner,
+  .heroSection,
+  .bottomGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .progressBlock {
+    min-width: 0;
+  }
+
+  .newRoadmapButton {
+    margin-left: 0;
+  }
+}
+
+@media (max-width: 720px) {
+  .main {
+    padding: 24px 16px 48px;
+  }
+
+  .navInner {
+    padding: 14px 16px;
+  }
+
+  .heroCopy,
+  .heroPanel,
+  .phaseBlock,
+  .infoCard,
+  .loadingCard,
+  .insightCard,
+  .insightCardAccent {
+    border-radius: 22px;
+  }
+
+  .heroCopy h1 {
+    max-width: none;
+  }
+
+  .statsGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .tabButton,
+  .newRoadmapButton {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .tabsRow {
+    display: grid;
+  }
+
+  .stepTopRow {
+    flex-wrap: wrap;
+  }
+}
