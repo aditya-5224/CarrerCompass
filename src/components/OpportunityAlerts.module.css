@@ -1,0 +1,200 @@
+.alertsCard {
+  background: rgba(15, 19, 32, 0.98);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 32px;
+  padding: 2rem;
+  display: grid;
+  gap: 1.75rem;
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.35);
+}
+
+.alertsHeader {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.alertsLabel {
+  font-size: 0.75rem;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: #a78bfa;
+  margin: 0 0 0.4rem;
+}
+
+.alertsTitle {
+  font-size: 1.7rem;
+  font-weight: 800;
+  color: #f8fafc;
+  margin: 0;
+}
+
+.yearSelector {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+}
+
+.yearButton {
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.05);
+  color: #cbd5e1;
+  padding: 0.85rem 1rem;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: all 0.22s ease;
+}
+
+.yearButtonActive {
+  background: rgba(99, 102, 241, 0.9);
+  color: #fff;
+  border-color: rgba(99, 102, 241, 0.9);
+}
+
+.urgentBanner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1.2rem 1.3rem;
+  border-radius: 24px;
+  background: linear-gradient(90deg, rgba(239, 68, 68, 0.14), rgba(249, 115, 22, 0.12));
+  border: 1px solid rgba(248, 113, 113, 0.22);
+}
+
+.urgentTitle {
+  color: #fff;
+  font-weight: 700;
+  margin: 0;
+}
+
+.urgentSubtitle {
+  color: #f8fafc;
+  margin: 0.25rem 0 0;
+  font-size: 0.95rem;
+}
+
+.learnMore {
+  color: #fff;
+  font-weight: 700;
+  text-decoration: none;
+  background: rgba(255, 255, 255, 0.08);
+  padding: 0.7rem 1rem;
+  border-radius: 16px;
+}
+
+.sectionGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1.25rem;
+}
+
+.alertSection {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 26px;
+  padding: 1.35rem;
+  display: grid;
+  gap: 1rem;
+}
+
+.sectionTitleRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.sectionHeading {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.65rem;
+  font-weight: 700;
+  color: #f8fafc;
+}
+
+.sectionTag {
+  color: #cbd5e1;
+  font-size: 0.8rem;
+  background: rgba(255, 255, 255, 0.05);
+  padding: 0.45rem 0.75rem;
+  border-radius: 999px;
+}
+
+.cardList {
+  display: grid;
+  gap: 1rem;
+}
+
+.cardItem {
+  display: grid;
+  gap: 0.6rem;
+  padding: 1rem;
+  border-radius: 22px;
+  background: rgba(15, 19, 32, 0.96);
+  text-decoration: none;
+  color: inherit;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  transition: transform 0.16s ease, border-color 0.16s ease;
+}
+
+.cardItem:hover {
+  transform: translateY(-2px);
+  border-color: rgba(99, 102, 241, 0.4);
+}
+
+.cardMeta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  font-size: 0.85rem;
+  color: #94a3b8;
+}
+
+.cardTag {
+  background: rgba(255, 255, 255, 0.05);
+  padding: 0.35rem 0.75rem;
+  border-radius: 999px;
+}
+
+.cardDate {
+  white-space: nowrap;
+}
+
+.cardTitle {
+  margin: 0;
+  color: #fff;
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.cardSubtitle {
+  margin: 0;
+  color: #cbd5e1;
+  font-size: 0.92rem;
+  line-height: 1.6;
+}
+
+.footerText {
+  color: #94a3b8;
+  font-size: 0.84rem;
+  text-align: right;
+}
+
+.loading,
+.error {
+  grid-column: 1 / -1;
+  padding: 1.25rem;
+  border-radius: 22px;
+  background: rgba(255, 255, 255, 0.05);
+  color: #cbd5e1;
+}
+
+@media (max-width: 980px) {
+  .sectionGrid {
+    grid-template-columns: 1fr;
+  }
+}
