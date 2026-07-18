@@ -9,6 +9,7 @@ import Link from "next/link";
 import styles from "./profile.module.css";
 import { getActivity, clearActivity, relativeTime, ActivityEvent } from "@/lib/activity";
 import AcademicPortal from "@/components/StudentCard/AcademicPortal";
+import OpportunityAlerts from "@/components/OpportunityAlerts";
 
 // Icon map
 const ICON_MAP: Record<string, React.ReactNode> = {
@@ -101,6 +102,11 @@ export default function ProfilePage() {
           {/* ── Academic Portal ── */}
           <motion.div variants={itemVariants}>
             <AcademicPortal />
+          </motion.div>
+
+          {/* ── Opportunity & Event Alerts ── */}
+          <motion.div variants={itemVariants}>
+            <OpportunityAlerts />
           </motion.div>
 
           {/* ── Activity Feed ── */}
