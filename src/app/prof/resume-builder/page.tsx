@@ -246,107 +246,44 @@ export default function ResumeBuilder() {
     }
 
     setState("generating");
+    let printFrame: HTMLIFrameElement | null = null;
     try {
-      const html2canvas = (await import("html2canvas")).default;
-      const { jsPDF } = await import("jspdf");
+      printFrame = document.createElement("iframe");
+      printFrame.title = "Resume print preview";
+      printFrame.setAttribute("sandbox", "allow-modals allow-same-origin");
+      printFrame.style.position = "fixed";
+      printFrame.style.left = "-10000px";
+      printFrame.style.top = "0";
+      printFrame.style.width = "210mm";
+      printFrame.style.height = "297mm";
+      printFrame.style.border = "0";
 
-      // Create an off-screen iframe to render the HTML properly without polluting the main page's CSS
-      const iframe = document.createElement("iframe");
-      iframe.style.position = "absolute";
-      iframe.style.width = "800px"; // Fixed A4-like width
-      iframe.style.height = "2500px"; // Very tall to prevent scrollbars cutting off content
-      iframe.style.top = "-9999px";
-      iframe.style.left = "-9999px";
-      document.body.appendChild(iframe);
+      const frameLoaded = new Promise<void>((resolve, reject) => {
+        printFrame?.addEventListener("load", () => resolve(), { once: true });
+        printFrame?.addEventListener(
+          "error",
+          () => reject(new Error("Could not prepare the resume for printing.")),
+          { once: true }
+        );
+      });
 
-      const doc = iframe.contentWindow?.document;
-      if (doc) {
-        doc.open();
-        doc.write(tailoredResumeHtml);
-        doc.close();
+      printFrame.srcdoc = tailoredResumeHtml;
+      document.body.appendChild(printFrame);
+      await frameLoaded;
+
+      const printWindow = printFrame.contentWindow;
+      if (!printWindow) {
+        throw new Error("Could not open the resume print preview.");
       }
 
-      // Wait a moment for styles to apply
-      await new Promise((resolve) => setTimeout(resolve, 800));
-
-      const element = doc?.body;
-      if (element) {
-        // Enforce base styling
-        element.style.padding = "12mm";
-        element.style.backgroundColor = "white";
-        element.style.color = "black";
-        element.style.fontSize = "10.5pt";
-        element.style.boxSizing = "border-box";
-        // Force width to match A4 proportions (800px width -> ~1131px height)
-        element.style.width = "800px";
-        element.style.margin = "0";
-
-        const applyStyles = (size: number, padding: number) => {
-          element.style.padding = `${padding}mm`;
-          element.style.fontSize = `${size}pt`;
-          element.querySelectorAll("*").forEach((el: any) => {
-            if (el.tagName !== "H1" && el.tagName !== "H2") {
-              el.style.fontSize = `${size}pt`;
-            }
-            el.style.color = "black";
-            el.style.lineHeight = "1.2";
-          });
-        };
-
-        applyStyles(10.5, 12);
-
-        // Auto-fit algorithm: shrink font and padding if content is too tall
-        // 800px width * (297/210) = 1131px target height
-        let currentSize = 10.5;
-        let currentPadding = 12;
-
-        while (element.scrollHeight > 1131 && currentSize > 6.5) {
-          currentSize -= 0.5;
-          currentPadding -= 0.5;
-          applyStyles(currentSize, currentPadding);
-        }
-
-        // 1. Render the HTML to a canvas
-        const canvas = await html2canvas(element, {
-          scale: 2, // High resolution
-          useCORS: true,
-          windowWidth: 800,
-        });
-
-        // 2. Create the PDF
-        const pdf = new jsPDF("portrait", "mm", "a4");
-
-        // 3. Calculate scaling to fit perfectly on ONE page
-        const pdfWidth = pdf.internal.pageSize.getWidth();
-        const pdfHeight = pdf.internal.pageSize.getHeight();
-
-        const imgData = canvas.toDataURL("image/jpeg", 1.0);
-        const canvasWidth = canvas.width;
-        const canvasHeight = canvas.height;
-
-        // Ratio to fit width
-        const ratioWidth = pdfWidth / canvasWidth;
-        // Ratio to fit height
-        const ratioHeight = pdfHeight / canvasHeight;
-
-        // Use the smaller ratio so it fits entirely on ONE page
-        const ratio = Math.min(ratioWidth, ratioHeight);
-
-        const finalWidth = canvasWidth * ratio;
-        const finalHeight = canvasHeight * ratio;
-
-        // Center it horizontally if it's scaled by height
-        const marginX = (pdfWidth - finalWidth) / 2;
-        const marginY = 0; // Stick to top
-
-        pdf.addImage(imgData, "JPEG", marginX, marginY, finalWidth, finalHeight);
-        pdf.save("tailored-resume.pdf");
-      }
-
-      document.body.removeChild(iframe);
+      await printWindow.document.fonts.ready;
+      printWindow.addEventListener("afterprint", () => printFrame?.remove(), { once: true });
+      printWindow.focus();
+      printWindow.print();
     } catch (err) {
       console.error("PDF download error:", err);
-      setError("Could not download PDF.");
+      printFrame?.remove();
+      setError(err instanceof Error ? err.message : "Could not open the PDF print dialog.");
     } finally {
       setState("idle");
     }
@@ -459,7 +396,7 @@ export default function ResumeBuilder() {
                 Copy Tailored
               </button>
               <button className={styles.secondaryButton} onClick={handleDownloadTailored} disabled={!tailoredResumeHtml || state === "generating"}>
-                {state === "generating" ? "Generating PDF..." : "Download PDF"}
+                {state === "generating" ? "Preparing PDF..." : "Print / Save PDF"}
               </button>
             </div>
           </div>

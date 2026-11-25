@@ -18,11 +18,11 @@ const resumeTemplate = `
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Single Page Resume</title>
+  <title>Tailored Resume</title>
   <style>
     @page {
-      margin: 1cm !important;
       size: A4;
+      margin: 12mm;
     }
     * {
       box-sizing: border-box;
@@ -30,8 +30,8 @@ const resumeTemplate = `
       padding: 0;
     }
     html, body {
-      font-family: "Calibri", "Helvetica", "Arial", sans-serif;
-      font-size: 10pt;
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 9.5pt;
       line-height: 1.2;
       margin: 0 auto;
       padding: 10mm;
@@ -42,35 +42,38 @@ const resumeTemplate = `
       background: white !important;
     }
     h1 {
-      font-size: 22pt;
+      font-size: 23pt;
       font-weight: bold;
-      margin: 0 0 2pt 0;
+      margin: 0;
       text-align: center;
       color: black !important;
     }
-    .address {
-      font-size: 9.5pt;
+    .designation {
+      font-size: 10.5pt;
+      font-weight: bold;
       text-align: center;
-      margin-bottom: 6pt;
-      display: block;
+      margin: 0 0 3pt;
       color: black !important;
     }
-    .address div {
-      display: inline;
-      margin-right: 4pt;
+    .contact {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 2pt 7pt;
+      font-size: 9pt;
+      margin-bottom: 8pt;
     }
     .section {
-      margin-top: 4pt;
-      margin-bottom: 4pt;
+      margin: 7pt 0 0;
       page-break-inside: avoid;
       break-inside: avoid;
     }
     .section h2 {
-      font-size: 12pt;
+      font-size: 10.5pt;
       font-weight: bold;
       border-bottom: 1px solid black;
-      margin-bottom: 3pt;
-      padding-bottom: 1pt;
+      margin-bottom: 4pt;
+      padding-bottom: 2pt;
       text-transform: uppercase;
       color: black !important;
       page-break-after: avoid;
@@ -90,7 +93,7 @@ const resumeTemplate = `
     }
     ul li {
       margin-bottom: 1pt;
-      line-height: 1.1;
+      line-height: 1.2;
     }
     .tabular {
       display: table;
@@ -115,48 +118,65 @@ const resumeTemplate = `
       margin-bottom: 2pt;
     }
     p {
-      margin: 0 0 3pt 0;
-      line-height: 1.1;
+      margin: 0 0 3pt;
+      line-height: 1.2;
     }
     a {
-      color: #0563C1;
-      text-decoration: underline;
+      color: black;
+      text-decoration: none;
+    }
+    @media print {
+      html, body {
+        width: auto;
+        max-width: none;
+        margin: 0;
+        padding: 0;
+      }
+      .section {
+        break-inside: auto;
+        page-break-inside: auto;
+      }
+      .entry, .project-item, li {
+        break-inside: avoid;
+        page-break-inside: avoid;
+      }
+      h2 {
+        break-after: avoid;
+        page-break-after: avoid;
+      }
     }
   </style>
 </head>
 <body>
   <h1>{{NAME}}</h1>
-  <div class="address">
-    <div>{{DESIGNATION}}</div>
-    <div><b>Phone:</b> {{PHONE}}</div>
-    <div><b>Email:</b> <a href="mailto:{{EMAIL}}">{{EMAIL}}</a></div>
-    <div><b>LinkedIn:</b> <a href="{{LINKEDIN}}">{{LINKEDIN}}</a></div>
+  <div class="designation">{{DESIGNATION}}</div>
+  <div class="contact">
+    <span>{{LOCATION}}</span>
+    <span>{{PHONE}}</span>
+    <span><a href="mailto:{{EMAIL}}">{{EMAIL}}</a></span>
+    <span><a href="{{LINKEDIN}}">LinkedIn</a></span>
+    <span><a href="{{WEBSITE}}">Portfolio</a></span>
   </div>
   <div class="section">
     <h2>Summary</h2>
     <p>{{OBJECTIVE}}</p>
   </div>
-  <br>
-  <div class="section">
-    <h2>Experience</h2>
-    {{EXPERIENCE}}
-  </div>
-  <br>
-  <div class="section">
-    <h2>Education</h2>
-    {{EDUCATION}}
-  </div>
-  <br>
   <div class="section">
     <h2>Skills</h2>
     {{SKILLS}}
   </div>
-  <br>
+  <div class="section">
+    <h2>Experience</h2>
+    {{EXPERIENCE}}
+  </div>
   <div class="section">
     <h2>Projects</h2>
     {{PROJECTS}}
   </div>
-  <br>
+  <div class="section">
+    <h2>Education</h2>
+    {{EDUCATION}}
+  </div>
   <div class="section">
     <h2>Licenses & Certifications</h2>
     {{LICENCE_CERTIFICATIONS}}

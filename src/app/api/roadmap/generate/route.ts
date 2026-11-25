@@ -1,18 +1,6 @@
 import { NextResponse } from "next/server";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
-type GeminiCandidate = {
-  content?: {
-    parts?: Array<{
-      text?: string;
-    }>;
-  };
-};
-
-type GeminiResponse = {
-  candidates?: GeminiCandidate[];
-};
-
 type RoadmapData = {
   title: string;
   tagline: string;
@@ -105,7 +93,7 @@ function extractJsonText(text: string) {
       const err = new Error(
         `Failed to parse JSON output from Gemini. Tried candidate: ${candidate.slice(0, 200)}...`
       );
-      (err as any).cause = secondErr || firstErr;
+      console.error("Gemini JSON parsing failed:", secondErr || firstErr);
       throw err;
     }
   }
@@ -174,7 +162,13 @@ export async function POST(request: Request) {
     ].join("\n");
 
     // Use the official SDK and the gemini-3-flash-preview model.
-    const modelClient = client.getGenerativeModel({ model: "gemini-3-flash-preview" });
+    const modelClient = client.getGenerativeModel({
+      model: "gemini-3-flash-preview",
+      generationConfig: {
+        responseMimeType: "application/json",
+        maxOutputTokens: 8192,
+      },
+    });
     const sdkResponse = await modelClient.generateContent({
       contents: [
         {
@@ -184,24 +178,9 @@ export async function POST(request: Request) {
       ],
     });
 
-    // SDK responses can vary slightly in shape; try to extract text defensively.
-    const sdkAny = sdkResponse as any;
-    const responseText =
-      (typeof sdkAny?.response?.text === "function" ? sdkAny.response.text() : undefined) ||
-      (typeof sdkAny?.text === "function" ? sdkAny.text() : undefined) ||
-      (typeof sdkAny?.responseText === "string" ? sdkAny.responseText : undefined);
-    const outputText =
-      (typeof responseText === "string" ? responseText.trim() : undefined) ||
-      sdkAny?.candidates?.[0]?.content?.parts?.map((p: any) => p.text || "").join("\n").trim() ||
-      sdkAny?.candidates?.[0]?.text ||
-      sdkAny?.output?.[0]?.content?.parts?.map((p: any) => p.text || "").join("\n").trim() ||
-      (typeof sdkAny === "string" ? sdkAny : undefined);
+    const outputText = sdkResponse.response.text().trim();
 
     if (!outputText) {
-      if (sdkAny?.response?.promptFeedback) {
-        console.error("Gemini promptFeedback:", JSON.stringify(sdkAny.response.promptFeedback, null, 2));
-      }
-      console.error("SDK response:", JSON.stringify(sdkAny, null, 2).slice(0, 4000));
       return NextResponse.json({ error: "Gemini returned an empty response." }, { status: 500 });
     }
 
@@ -209,9 +188,18 @@ export async function POST(request: Request) {
     return NextResponse.json({ roadmap });
   } catch (error) {
     console.error("Roadmap generation route error:", error);
+    const leakedKeyError =
+      error instanceof Error && error.message.includes("API key was reported as leaked");
     return NextResponse.json(
-      { error: "Unexpected server error while generating the roadmap." },
-      { status: 500 }
+      {
+        error:
+          leakedKeyError
+            ? "The Gemini API key was blocked because it was reported as leaked. Revoke it, create a replacement key, update GEMINI_API_KEY, and restart the app."
+            : error instanceof Error
+              ? `Roadmap generation failed: ${error.message}`
+              : "Roadmap generation failed. Please try again.",
+      },
+      { status: 502 }
     );
   }
 }

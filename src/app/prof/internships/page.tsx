@@ -79,6 +79,25 @@ function analyseResume(text: string): ResumeAnalysis {
   return { role, level, skills, experience };
 }
 
+async function extractPdfText(file: File) {
+  const pdfjs = await import("pdfjs-dist");
+  pdfjs.GlobalWorkerOptions.workerSrc = new URL(
+    "pdfjs-dist/build/pdf.worker.min.mjs",
+    import.meta.url
+  ).toString();
+
+  const document = await pdfjs.getDocument({ data: await file.arrayBuffer() }).promise;
+  const pages: string[] = [];
+
+  for (let pageNumber = 1; pageNumber <= document.numPages; pageNumber += 1) {
+    const page = await document.getPage(pageNumber);
+    const content = await page.getTextContent();
+    pages.push(content.items.map((item) => ("str" in item ? item.str : "")).join(" "));
+  }
+
+  return pages.join("\n").trim();
+}
+
 // ─── Platform builder ───────────────────────────────────────────────────────
 
 function buildPlatforms(analysis: ResumeAnalysis): Platform[] {
@@ -210,17 +229,31 @@ export default function ConnectPage() {
 
   // ── File handling ──────────────────────────────────────────────────────────
   const processFile = async (file: File) => {
-    if (!file.name.toLowerCase().endsWith(".docx")) {
-      alert("Please upload a .docx file.");
+    const fileNameLower = file.name.toLowerCase();
+    const isPdf = fileNameLower.endsWith(".pdf");
+    const isDocx = fileNameLower.endsWith(".docx");
+
+    if (!isPdf && !isDocx) {
+      alert("Please upload a .docx or .pdf file.");
       return;
     }
     setFileName(file.name);
     setPageState("analysing");
 
     try {
-      const mammoth     = await import("mammoth");
-      const arrayBuffer = await file.arrayBuffer();
-      const { value }   = await mammoth.extractRawText({ arrayBuffer });
+      let value: string;
+      if (isPdf) {
+        value = await extractPdfText(file);
+        if (!value) {
+          alert("This PDF has no selectable text. Please upload a text-based PDF or a .docx file.");
+          setPageState("upload");
+          return;
+        }
+      } else {
+        const mammoth = await import("mammoth");
+        const arrayBuffer = await file.arrayBuffer();
+        ({ value } = await mammoth.extractRawText({ arrayBuffer }));
+      }
 
       // Small artificial delay for UX feel
       await new Promise((r) => setTimeout(r, 1800));
@@ -317,7 +350,7 @@ export default function ConnectPage() {
             role="button"
             onKeyDown={(e) => (e.key === "Enter" || e.key === " ") && fileRef.current?.click()}
           >
-            <input ref={fileRef} type="file" accept=".docx" className={styles.hiddenInput} onChange={handleFileChange} />
+            <input ref={fileRef} type="file" accept=".docx,.pdf,application/pdf" className={styles.hiddenInput} onChange={handleFileChange} />
 
             <div className={styles.uploadIconWrapper}>
               <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5">
@@ -326,7 +359,7 @@ export default function ConnectPage() {
             </div>
 
             <h2 className={styles.uploadTitle}>Upload Your Resume</h2>
-            <p className={styles.uploadSubtitle}>Drag & drop or click to select your <strong>.docx</strong> file</p>
+            <p className={styles.uploadSubtitle}>Drag & drop or click to select your <strong>.docx or .pdf</strong> file</p>
             <span className={styles.uploadHint}>We'll detect your role, skills & experience level — then match you to the best platforms.</span>
           </section>
         )}
